@@ -18,7 +18,9 @@ public interface JobRepo extends JpaRepository<Job, Long> {
 
     List<Job> findByAssignedUserNull();
 
-     List<Job> findByStatusAndAssignedUserId(JobStatus status, Long id);
+    List<Job> findByStatusAndAssignedUserId(JobStatus status, Long id);
+
+    List<Job> findByStatus(JobStatus status);
 
     
 }

@@ -47,6 +47,7 @@ public class JobController {
             System.out.println("here 1");
             User user = userService.findById(userId);            
             user.getCreatedJobs().add(job);
+            job.setStatus(JobStatus.AVAILABLE);
             jobService.save(job);
             userService.save(user);
             return new ResponseEntity<Object>("Your request has been submitted", HttpStatus.OK);
@@ -85,7 +86,7 @@ public class JobController {
         method = RequestMethod.GET)
     public ResponseEntity<Object> availableJob(){
         try{
-            List<Job> availableJobs = jobRepo.findByAssignedUserNull();
+            List<Job> availableJobs = jobRepo.findByStatus(JobStatus.AVAILABLE);
             return new ResponseEntity<Object>(availableJobs, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
@@ -100,7 +101,10 @@ public class JobController {
     @GetMapping("findJobById/{id}")
     public ResponseEntity<Object> getPickupJobById(@PathVariable Long id) {
         Optional<Job> job = jobService.findJobById(id);
-        return new ResponseEntity<Object>(job, HttpStatus.OK);
+        if (job.isPresent()){
+            job.get();
+        }
+        return new ResponseEntity<Object>(job.get(), HttpStatus.OK);
     }
 
   @PutMapping("/startjob/{id}")

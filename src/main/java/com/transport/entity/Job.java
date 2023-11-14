@@ -97,7 +97,6 @@ public class Job {
 
     @Enumerated(EnumType.STRING)
     private JobStatus status;
-        
 
     
 }
